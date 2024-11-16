@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LabelAtom from "../atoms/LabelAtom";
 import InputAtom from "../atoms/InputAtom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LoginUser, reset } from "../../features/authSlice";
 
 const LoginTemplate = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (user || isSuccess) {
+      navigate("/dashboard");
+    }
+    dispatch(reset());
+  }, [user, isSuccess, dispatch, navigate]);
+
+  const Auth = (e) => {
+    e.preventDefault();
+    dispatch(LoginUser({ email, password }));
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-slate-100">
       <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
@@ -26,14 +49,16 @@ const LoginTemplate = () => {
               Form Login
             </h2>
 
-            <form>
+            <form onSubmit={Auth}>
+              {isError && <p className="text-center">{message}</p>}
               <div className="mb-6">
                 <LabelAtom htmlFor="email" label="Email" />
                 <InputAtom
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="mt-1 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -43,7 +68,8 @@ const LoginTemplate = () => {
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  className="mt-1 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
@@ -51,7 +77,7 @@ const LoginTemplate = () => {
                 type="submit"
                 className="w-full py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300"
               >
-                Masuk
+                {isLoading ? "Loading..." : "Masuk"}
               </button>
             </form>
           </div>

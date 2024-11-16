@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     <React.Fragment>
       <Navbar />
       <Sidebar />
-      <div class="p-4 sm:ml-64 mt-[70px]">
+      <div className="p-4 sm:ml-64 mt-[70px]">
         <main>{children}</main>
       </div>
     </React.Fragment>
