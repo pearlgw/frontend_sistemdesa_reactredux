@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoEllipsisHorizontal, IoList } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import LinkAtom from "./atoms/LinkAtom";
-import { useDispatch } from "react-redux";
-import { LogOut, reset } from "../features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getMe, LogOut, reset } from "../features/authSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
+
   const Logout = () => {
     dispatch(LogOut());
     dispatch(reset());
@@ -52,6 +58,14 @@ const Navbar = () => {
                 class="z-50 hidden my-4 text-base list-none bg-gray-700 divide-y divide-gray-600 rounded shadow"
                 id="dropdown-user"
               >
+                <div class="px-4 py-3">
+                  <span class="block text-sm text-white">
+                    {user && user.name}
+                  </span>
+                  <span class="block text-sm text-white truncate">
+                    {user && user.email}
+                  </span>
+                </div>
                 <ul class="py-1" role="none">
                   <li>
                     <LinkAtom

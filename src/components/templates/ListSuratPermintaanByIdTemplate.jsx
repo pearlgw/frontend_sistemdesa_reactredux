@@ -1,20 +1,20 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import DateTime from "../atoms/DateTime";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { IoAddCircleOutline } from "react-icons/io5";
 
-const SuratPermintaanTemplate = () => {
-  const [letterRequests, setLetterRequests] = useState([]);
+const ListSuratPermintaanByIdTemplate = () => {
+  const [listLetterRequests, setListLetterRequests] = useState([]);
 
   useEffect(() => {
-    getLetterRequests();
+    getUsers();
   }, []);
-
-  const getLetterRequests = async () => {
+  const getUsers = async () => {
     const response = await axios.get(
-      `${process.env.REACT_APP_URL}/letter-requests`
+      `${process.env.REACT_APP_URL}/letter-request-user`
     );
-    setLetterRequests(response.data.data);
+    setListLetterRequests(response.data.data);
   };
 
   const getStatusBadge = (status) => {
@@ -33,7 +33,16 @@ const SuratPermintaanTemplate = () => {
         <h1 className="text-3xl font-semibold text-gray-800">
           Surat Permintaan
         </h1>
-        <p className="text-gray-600 mt-2 mb-5">Daftar semua surat permintaan</p>
+        <p className="text-gray-600 mt-2 mb-5">
+          Daftar semua surat permintaan anda
+        </p>
+        <Link
+          to={"/surat-permintaan/tambah"}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
+        >
+          <IoAddCircleOutline className="text-lg" />
+          Buat Surat Permintaan
+        </Link>
       </div>
 
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
@@ -44,7 +53,7 @@ const SuratPermintaanTemplate = () => {
                 No
               </th>
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-600">
-                Nama Pengguna
+                Nama
               </th>
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-600">
                 Jenis Surat
@@ -62,10 +71,7 @@ const SuratPermintaanTemplate = () => {
                 Link File
               </th>
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-600">
-                Aksi
-              </th>
-              <th className="py-3 px-6 text-left text-sm font-medium text-gray-600">
-                Pengguna Membuat
+                Waktu Buat
               </th>
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-600">
                 Respon Admin
@@ -73,52 +79,38 @@ const SuratPermintaanTemplate = () => {
             </tr>
           </thead>
           <tbody>
-            {letterRequests.map((letterRequest, index) => (
-              <tr className="border-b" key={letterRequest.uuid}>
+            {listLetterRequests.map((listLetterRequest, index) => (
+              <tr className="border-b" key={listLetterRequest.uuid}>
                 <td className="py-3 px-6 text-sm text-gray-700">{index + 1}</td>
                 <td className="py-3 px-6 text-sm text-gray-700">
-                  {letterRequest.user.name}
+                  {listLetterRequest.user.name}
                 </td>
                 <td className="py-3 px-6 text-sm text-gray-700">
-                  {letterRequest.letter_type.name}
+                  {listLetterRequest.letter_type.name}
                 </td>
                 <td className="py-3 px-6 text-sm text-gray-700">
-                  {letterRequest.description}
+                  {listLetterRequest.description}
                 </td>
                 <td className="py-3 px-6 text-sm text-gray-700">
                   <span
                     className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${getStatusBadge(
-                      letterRequest.status
+                      listLetterRequest.status
                     )}`}
                   >
-                    {letterRequest.status}
+                    {listLetterRequest.status}
                   </span>
                 </td>
                 <td className="py-3 px-6 text-sm text-gray-700">
-                  {letterRequest.description_admin ?? "-"}
+                  {listLetterRequest.description_admin ?? "-"}
                 </td>
                 <td className="py-3 px-6 text-sm text-gray-700">
-                  {letterRequest.link_file ?? "-"}
+                  {listLetterRequest.link_file ?? "-"}
                 </td>
                 <td className="py-3 px-6 text-sm text-gray-700">
-                  {letterRequest.status === "pending" ? (
-                    <Link
-                      to={`/surat-permintaan/detail/${letterRequest.uuid}`}
-                      className="text-blue-500 hover:text-blue-700 font-semibold"
-                    >
-                      Detail
-                    </Link>
-                  ) : (
-                    <span className="text-green-700 font-medium">
-                      Sudah direspon
-                    </span>
-                  )}
+                  <DateTime timeStamp={listLetterRequest.createdAt} />
                 </td>
                 <td className="py-3 px-6 text-sm text-gray-700">
-                  <DateTime timeStamp={letterRequest.createdAt} />
-                </td>
-                <td className="py-3 px-6 text-sm text-gray-700">
-                  <DateTime timeStamp={letterRequest.updatedAt} />
+                  <DateTime timeStamp={listLetterRequest.updatedAt} />
                 </td>
               </tr>
             ))}
@@ -129,4 +121,4 @@ const SuratPermintaanTemplate = () => {
   );
 };
 
-export default SuratPermintaanTemplate;
+export default ListSuratPermintaanByIdTemplate;

@@ -9,6 +9,8 @@ import RegisterTemplate from "./components/templates/RegisterTemplate";
 import TambahJenisSurat from "./pages/TambahJenisSurat";
 import EditJenisSurat from "./pages/EditJenisSurat";
 import SuratPermintaanAdmin from "./pages/SuratPermintaanAdmin";
+import BuatSuratPermintaan from "./pages/BuatSuratPermintaan";
+import ListSuratPermintaanById from "./pages/ListSuratPermintaanById";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/jenis-surat/edit/:id" element={<EditJenisSurat />} />
         <Route path="/surat-permintaan" element={<SuratPermintaan />} />
         <Route path="/surat-permintaan/detail/:id" element={<SuratPermintaanAdmin />} />
+        <Route path="/surat-permintaan/tambah" element={<BuatSuratPermintaan />} />
+        <Route path="/surat-permintaan-pengguna" element={<ListSuratPermintaanById />} />
         <Route path="/" element={<LoginTemplate />} />
         <Route path="/daftar" element={<RegisterTemplate />} />
       </Routes>

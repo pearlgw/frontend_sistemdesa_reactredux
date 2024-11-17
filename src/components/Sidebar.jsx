@@ -6,15 +6,17 @@ import {
   IoLogOut,
   IoMailOpen,
   IoDocument,
+  IoMailOutline,
 } from "react-icons/io5";
 import LinkAtom from "./atoms/LinkAtom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LogOut, reset } from "../features/authSlice";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
   const Logout = () => {
     dispatch(LogOut());
@@ -33,29 +35,40 @@ const Sidebar = () => {
             <LinkAtom icon={IoHome} text={"Dashboard"} to="/dashboard" />
           </li>
           <li>
-            <LinkAtom icon={IoPerson} text={"Pengguna"} to={"/pengguna"} />
-          </li>
-          <li>
             <LinkAtom
-              icon={IoDocument}
-              text={"Jenis Surat"}
-              to={"/jenis-surat"}
+              icon={IoMailOutline}
+              text={"Surat Permintaan Anda"}
+              to={"/surat-permintaan-pengguna"}
             />
           </li>
-          <li>
-            <LinkAtom
-              icon={IoMailOpen}
-              text={"Surat Permintaan"}
-              to={"/surat-permintaan"}
-            />
-          </li>
+          {user && user.role === "admin" && (
+            <>
+              <li>
+                <LinkAtom icon={IoPerson} text={"Pengguna"} to={"/pengguna"} />
+              </li>
+              <li>
+                <LinkAtom
+                  icon={IoDocument}
+                  text={"Jenis Surat"}
+                  to={"/jenis-surat"}
+                />
+              </li>
+              <li>
+                <LinkAtom
+                  icon={IoMailOpen}
+                  text={"Surat Permintaan"}
+                  to={"/surat-permintaan"}
+                />
+              </li>
+            </>
+          )}
           <li>
             <button
               onClick={Logout}
               className={`w-full flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700 group`}
             >
               <IoLogOut className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-200" />
-              <span className="ms-3">Logout</span>
+              <span className="ms-3">Keluar</span>
             </button>
           </li>
         </ul>
