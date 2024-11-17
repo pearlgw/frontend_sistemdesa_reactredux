@@ -25,7 +25,6 @@ const LoginTemplate = () => {
     e.preventDefault();
     dispatch(LoginUser({ email, password }));
   };
-
   return (
     <div className="flex justify-center items-center min-h-screen bg-slate-100">
       <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">

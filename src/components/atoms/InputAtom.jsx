@@ -1,6 +1,6 @@
 import React from "react";
 
-const InputAtom = ({ type, id, placeholder, value, onChange }) => {
+const InputAtom = ({ type, id, placeholder, value, onChange, readOnly }) => {
   return (
     <input
       type={type}
@@ -9,6 +9,7 @@ const InputAtom = ({ type, id, placeholder, value, onChange }) => {
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      readOnly={readOnly}
     />
   );
 };

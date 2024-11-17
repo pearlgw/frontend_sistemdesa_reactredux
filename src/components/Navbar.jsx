@@ -1,12 +1,18 @@
 import React from "react";
-import {
-  IoEllipsisHorizontal,
-  IoList,
-} from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { IoEllipsisHorizontal, IoList } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
 import LinkAtom from "./atoms/LinkAtom";
+import { useDispatch } from "react-redux";
+import { LogOut, reset } from "../features/authSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const Logout = () => {
+    dispatch(LogOut());
+    dispatch(reset());
+    navigate("/");
+  };
   return (
     <nav class="fixed top-0 z-50 w-full bg-gray-800 border-b border-gray-700">
       <div class="px-3 py-3 lg:px-5 lg:pl-3">
@@ -46,17 +52,6 @@ const Navbar = () => {
                 class="z-50 hidden my-4 text-base list-none bg-gray-700 divide-y divide-gray-600 rounded shadow"
                 id="dropdown-user"
               >
-                <div class="px-4 py-3" role="none">
-                  <p class="text-sm text-gray-200" role="none">
-                    Neil Sims
-                  </p>
-                  <p
-                    class="text-sm font-medium text-gray-200 truncate"
-                    role="none"
-                  >
-                    neil.sims@flowbite.com
-                  </p>
-                </div>
                 <ul class="py-1" role="none">
                   <li>
                     <LinkAtom
@@ -66,11 +61,12 @@ const Navbar = () => {
                     />
                   </li>
                   <li>
-                    <LinkAtom
-                      text={"Keluar"}
-                      to="/keluar"
-                      classname="text-sm"
-                    />
+                    <button
+                      onClick={Logout}
+                      className={`p-2 ms-3 text-gray-200 rounded-lg hover:bg-gray-700 group text-sm`}
+                    >
+                      Keluar
+                    </button>
                   </li>
                 </ul>
               </div>

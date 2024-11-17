@@ -8,8 +8,19 @@ import {
   IoDocument,
 } from "react-icons/io5";
 import LinkAtom from "./atoms/LinkAtom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LogOut, reset } from "../features/authSlice";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const Logout = () => {
+    dispatch(LogOut());
+    dispatch(reset());
+    navigate("/");
+  };
   return (
     <aside
       id="logo-sidebar"
@@ -39,7 +50,13 @@ const Sidebar = () => {
             />
           </li>
           <li>
-            <LinkAtom icon={IoLogOut} text={"Keluar"} to={"/keluar"} />
+            <button
+              onClick={Logout}
+              className={`w-full flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700 group`}
+            >
+              <IoLogOut className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-200" />
+              <span className="ms-3">Logout</span>
+            </button>
           </li>
         </ul>
       </div>
